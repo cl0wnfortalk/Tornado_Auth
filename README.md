@@ -18,7 +18,7 @@
 
 1. Склонируйте репозиторий:
    ```bash
-   git clone https://github.com/ваш_пользователь/ваш_репозиторий.git
+   git clone https://github.com/cl0wnfortalk/Tornado_Auth.git
    cd ваш_репозиторий
    ```
 
