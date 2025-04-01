@@ -1,1 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление аккаунтом | Protocols</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+        .account-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding-top: 50px;
+        }
+        .account-card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .account-header {
+            background-color: #0d6efd;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .account-body {
+            padding: 30px;
+            background-color: white;
+        }
+        .action-card {
+            border-left: 4px solid #0d6efd;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        .action-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .action-card.danger {
+            border-left-color: #dc3545;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+            padding: 8px 15px;
+            font-weight: 500;
+        }
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+        }
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .action-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="account-container">
+        <div class="account-card">
+            <div class="account-header">
+                <div class="logo-text">Protocols</div>
+                <p class="mb-0">Управление вашим аккаунтом</p>
+            </div>
+            
+            <div class="account-body">
+                <!-- Информация о пользователе -->
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="https://www.flaticon.com/free-icon/user_17561717" class="rounded-circle mb-3" alt="Аватар">
+                        <h4 id="usernameDisplay">{{ username }}</h4>
+                        <p class="text-muted">Зарегистрирован: <span id="regDate">01.01.2023</span></p>
+                    </div>
+                </div>
+                
+                <!-- Действия с аккаунтом -->
+                <div class="action-card card mb-3">
+                    <div class="card-body">
+                        <h5><i class="fas fa-sign-out-alt action-icon text-primary"></i> Выход из аккаунта</h5>
+                        <p class="text-muted">Завершите текущий сеанс работы с вашим аккаунтом</p>
+                        <form action="/logout" method="post">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i class="fas fa-sign-out-alt me-2"></i> Выйти
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="action-card danger card mb-3">
+                    <div class="card-body">
+                        <h5><i class="fas fa-exclamation-triangle action-icon text-danger"></i> Удаление аккаунта</h5>
+                        <p class="text-muted">Это действие невозможно отменить. Все ваши данные будут безвозвратно удалены.</p>
+                        
+                        <!-- Модальное окно подтверждения -->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="fas fa-trash-alt me-2"></i> Удалить аккаунт
+                        </button>
+                        
+                        <!-- Модальное окно -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Подтверждение удаления</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Вы уверены, что хотите удалить свой аккаунт? Это действие нельзя отменить.</p>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="confirmDelete">
+                                            <label class="form-check-label" for="confirmDelete">
+                                                Да, я понимаю последствия
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                                        <form method="post" action="/delete-account" id="deleteForm">
+                                            <button type="submit" class="btn btn-danger" disabled id="confirmDeleteBtn">
+                                                Удалить аккаунт
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Дополнительные настройки -->
+                <div class="action-card card">
+                    <div class="card-body">
+                        <h5><i class="fas fa-cog action-icon text-primary"></i> Настройки безопасности</h5>
+                        <div class="list-group">
+                            <a href="/change-password" class="list-group-item list-group-item-action">
+                                <i class="fas fa-key me-2"></i> Изменить пароль
+                            </a>
+                            <a href="/two-factor" class="list-group-item list-group-item-action">
+                                <i class="fas fa-shield-alt me-2"></i> Двухфакторная аутентификация
+                            </a>
+                            <a href="/sessions" class="list-group-item list-group-item-action">
+                                <i class="fas fa-desktop me-2"></i> Активные сеансы
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // Загрузка данных пользователя (пример)
+            $.get('/api/user-data', function(data) {
+                $('#usernameDisplay').text(data.username);
+                $('#regDate').text(data.registration_date);
+                // Можно добавить больше данных
+            });
+            
+            // Подтверждение удаления аккаунта
+            $('#confirmDelete').change(function() {
+                $('#confirmDeleteBtn').prop('disabled', !this.checked);
+            });
+            
+            // Можно добавить обработку других событий
+        });
+    </script>
+</body>
+</html>
