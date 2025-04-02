@@ -24,7 +24,7 @@
 
 2. Создайте и активируйте виртуальное окружение:
    ```bash
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # Для Linux/Mac
    venv\Scripts\activate  # Для Windows
    ```
@@ -49,12 +49,12 @@
 Запустите сервер:
 
 ```bash
-python core.py
+python3 core.py
 ```
 
 Откройте в браузере:
 ```
-http://localhost:8888
+http://localhost:8888/login
 ```
 
 ## Функциональные возможности
